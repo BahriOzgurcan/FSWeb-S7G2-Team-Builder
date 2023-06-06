@@ -24,9 +24,22 @@ function App() {
   }
   ]);
 
-  const uyeEkleme = (uyeBilgisi) => {
-    setUyeListesi([...uyeListesi, uyeBilgisi])
+  const [duzenlenecekUye, setDuzenlenecekUye] = useState([
+
+  ]
+  );
+
+  const uyeEkleme = (kayitFormu) => {
+    setUyeListesi([...uyeListesi, kayitFormu])
   };
+
+  const uyeDuzenleme = (e) => {
+    setDuzenlenecekUye(e);
+  }
+
+  const uyeDuzenle = (kayitFormu) => {
+    setUyeListesi([...uyeListesi.filter((x) => x != duzenlenecekUye), kayitFormu])
+  }
 
   return (
     <div className="uye-listesi">
@@ -39,12 +52,13 @@ function App() {
             <p>Yas= {uye.yas}</p>
             <p>Rol= {uye.rol}</p>
             <p>sehir= {uye.sehir}</p>
+            <button onClick={()=>uyeDuzenleme(uye)}>Duzenle</button>
           </div>
         )
       })
       }
 
-      <Form uyeEkleme={uyeEkleme} />
+      <Form uyeEkleme={uyeEkleme} duzenlenecekUye={duzenlenecekUye} uyeDuzenle={uyeDuzenle}/>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const Form = ({ uyeEkleme }) => {
+const Form = ({ uyeEkleme, duzenlenecekUye, uyeDuzenle }) => {
+    const [guncellenecekMi, setGuncellenecekMi] = useState(false)
 
     const [kayitFormu, setKayitFormu] = useState({
         isim: "",
@@ -13,27 +14,36 @@ const Form = ({ uyeEkleme }) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        uyeEkleme(kayitFormu);
-        console.log(kayitFormu);
+        if (!guncellenecekMi){
+            uyeEkleme(kayitFormu);
+        } else {
+            uyeDuzenle(kayitFormu)
+            setGuncellenecekMi(false)
+        }
     };
 
     const chanheHandler = (e) => {
         const { value, name } = e.target;
         setKayitFormu({ ...kayitFormu, [name]: value })
-    }
+    };
+
+    useEffect(() => {
+        setKayitFormu(duzenlenecekUye)
+        setGuncellenecekMi(true)
+    }, [duzenlenecekUye]);
 
     return (
         <div>
             <h1>Calisan Kayit Formu</h1>
             <form onSubmit={submitHandler}>
-                <label htmlFor="isim">Isim Alani:</label>
-                <input
-                    name="isim"
-                    type="text"
-                    id="isim"
-                    value={kayitFormu.isim}
-                    onChange={chanheHandler}
-                /><br />
+                <label htmlFor="isim">Isim Alani:
+                    <input
+                        name="isim"
+                        type="text"
+                        id="isim"
+                        value={kayitFormu.isim}
+                        onChange={chanheHandler}
+                    /></label><br />
                 <label htmlFor="email">E-mail Alani:</label>
                 <input
                     name="email"
